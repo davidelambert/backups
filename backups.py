@@ -1,5 +1,6 @@
 from datetime import date
 import subprocess
+import json
 
 today = date.today()
 
@@ -7,19 +8,8 @@ remote_id = "delamb@clunker.lan"
 remote_base = "hotrod_backup"
 excludes_base = "/home/delamb/Dropbox/projects/backups/excludes"
 
-b = [
-    {"source": "/home/delamb/",
-     "excludes": "excludes-home",
-     "dest": "home"},
-
-    {"source": "/home/delamb/.config/",
-     "excludes": "excludes-.config",
-     "dest": ".config"},
-
-    {"source": "/home/delamb/.local",
-     "excludes": "excludes-.local",
-     "dest": ".local"}
-]
+with open("./backups_config.json", "r") as f:
+    b = json.load(f)
 
 for i in range(len(b)):
     dest_today = f'{remote_base}/{b[i]["dest"]}_{today.strftime("%Y-%m-%d")}'
