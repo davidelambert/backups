@@ -3,6 +3,7 @@ Arduino
 .arduino15
 .cache
 .cert
+.config
 conda_envs
 data
 Desktop
@@ -16,6 +17,7 @@ eclipse
 .eclipse-workspace
 .gradle
 .java
+.local
 .minecraft
 miniconda3
 .mozilla
