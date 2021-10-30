@@ -1,0 +1,6 @@
+.local/stata16
+.local/arduino-*
+.local/Zotero_linux-x86_64
+.local/share/Trash
+.local/share/baloo
+.local/share/virtualenv
