@@ -1,0 +1,17 @@
+[
+  {
+    "source": "/home/delamb/",
+    "excludes": "excludes_home",
+    "dest": "hotrod_backup/home"
+  },
+  {
+    "source": "/home/delamb/.config/",
+    "excludes": "excludes_config",
+    "dest": "hotrod_backup/.config"
+  },
+  {
+    "source": "/home/delamb/.local",
+    "excludes": "excludes_local",
+    "dest": "hotrod_backup/.local"
+  }
+]

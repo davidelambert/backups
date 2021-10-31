@@ -1,22 +1,26 @@
-from datetime import date
+from datetime import date, timedelta
 import subprocess
 import json
+from pathlib import Path
 
 today = date.today()
+# TODO: timedeltas
 
-remote_id = "delamb@clunker.lan"
-remote_base = "hotrod_backup"
-excludes_base = "/home/delamb/Dropbox/projects/backups/excludes"
+remote_id = 'delamb@clunker.lan'
+conf = Path('./conf')
 
-with open("./backups_config.json", "r") as f:
+with open(conf/'backups_config.json', 'r') as f:
     b = json.load(f)
+    # TODO: nest directory list in a level so other settings can be added?
 
 for i in range(len(b)):
-    dest_today = f'{remote_base}/{b[i]["dest"]}_{today.strftime("%Y-%m-%d")}'
-    excludes = f'--exclude-from={excludes_base}/{b[i]["excludes"]}'
-    remote_full = f'{remote_id}:{dest_today}'
+    # TODO: control flow for period
+    dest_this = f'{b[i]["dest"]}_{today.strftime("%Y-%m-%d")}'
 
-    subprocess.call(["ssh", remote_id, "mkdir", dest_today])
+    remote_full = f'{remote_id}:{dest_this}'
+    excludes = f'--exclude-from={str(conf.absolute())}/{b[i]["excludes"]}'
 
-    subprocess.call(["rsync", "-avz", "-e", "ssh", "--del",
+    subprocess.call(["ssh", remote_id, "mkdir", dest_this])
+
+    subprocess.call(["rsync", "-avz", "-e", "ssh",
                      excludes, b[i]["source"], remote_full])
