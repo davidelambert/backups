@@ -1,0 +1,27 @@
+{
+  "scripts_dir": "/home/delamb/projects/backup/output",
+  "backups": {
+    "hotrod_home": {
+      "source": "$HOME/",
+      "excludes": "excludes_home",
+      "dest": "delamb@clunker.lan:hotrod_backup/home",
+      "log": {
+        "dir": "$HOME/.log/backups/home",
+        "prefix": "home",
+        "delete_offset": "10 days"
+      }
+    },
+    "hotrod_config": {
+      "source": "/home/delamb/.config/",
+      "excludes": "excludes_config",
+      "dest": "hotrod_backup/.config",
+      "log": null
+    },
+    "hotrod_local": {
+      "source": "/home/delamb/.local",
+      "excludes": "excludes_local",
+      "dest": "hotrod_backup/.local",
+      "log": null
+    }
+  }
+}
