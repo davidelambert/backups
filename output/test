@@ -1,0 +1,26 @@
+#!/bin/bash
+
+TODAY=$(date '+%F')
+LOG_DIR=$HOME/.log/backups/home
+LOG_PREFIX=home_
+THIS_LOG=$LOG_DIR/$(echo $LOG_PREFIX)_$TODAY.log
+LOG_DELETE_OFFSET=$(date '+%F' -d '10 days ago')
+
+# create backup directory if it doesn't exist
+if [ ! -d "$LOG_DIR" ] ; then
+    mkdir $LOG_DIR
+fi
+
+# print datetime header to log
+printf "RSYNC LOG $(date '+%F %H:%M:%S')\n$(printf '=%.0s' ={1..39})\n" >> $THIS_LOG
+
+# rsync and log verbose output
+rsync -avz --exclude-from=/home/delamb/Dropbox/projects/backups/conf/excludes_home $HOME/ delamb@clunker.lan:hotrod_backup/home >> $THIS_LOG
+
+# 2 blank lines, in case of multiple backups in a day
+printf "\n\n" >> $THIS_LOG
+
+# clean up old logs
+if [ -f "$LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log" ] ; then
+    rm $LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log
+fi

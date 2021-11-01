@@ -1,5 +1,5 @@
 {
-  "scripts_dir": "/home/delamb/projects/backup/output",
+  "output_dir": "/home/delamb/projects/backup/output",
   "backups": {
     "hotrod_home": {
       "source": "$HOME/",
@@ -7,7 +7,7 @@
       "dest": "delamb@clunker.lan:hotrod_backup/home",
       "log": {
         "dir": "$HOME/.log/backups/home",
-        "prefix": "home",
+        "prefix": "home_",
         "delete_offset": "10 days"
       }
     },
