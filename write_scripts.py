@@ -16,11 +16,6 @@ for name, data in b.items():
 
 
 test = b['hotrod_home']
-source = test['source']
-dest = test['dest']
-excludes = str(Path(conf/test['excludes']).absolute())
-cmd = 'rsync -avz --exclude-from={0} {1} {2}'.format(excludes, source, dest)
-
 
 with open('./output/test', 'w') as f:
     if test['log'] is not None:
