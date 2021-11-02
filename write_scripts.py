@@ -22,32 +22,45 @@ excludes = str(Path(conf/test['excludes']).absolute())
 cmd = 'rsync -avz --exclude-from={0} {1} {2}'.format(excludes, source, dest)
 
 
-# TODO: write this shit a multiline string
-
 with open('./output/test', 'w') as f:
     if test['log'] is not None:
-        f.writelines([
-            '#!/bin/bash\n\n',
-            'TODAY=$(date \'+%F\')\n',
-            'LOG_DIR={}\n'.format(test['log']['dir']),
-            'LOG_PREFIX={}\n'.format(test['log']['prefix']),
-            'THIS_LOG=$LOG_DIR/$(echo $LOG_PREFIX)_$TODAY.log\n',
-            'LOG_DELETE_OFFSET=$(date \'+%F\' -d \'{} ago\')\n\n'.format(test['log']['delete_offset']),
-            '# create backup directory if it doesn\'t exist\n',
-            'if [ ! -d "$LOG_DIR" ] ; then\n',
-            '    mkdir $LOG_DIR\n',
-            'fi\n\n',
-            '# print datetime header to log\n',
-            'printf "RSYNC LOG $(date \'+%F %H:%M:%S\')\\n$(printf \'=%.0s\' ={1..39})\\n" >> $THIS_LOG\n\n',
-            '# rsync and log verbose output\n',
-            cmd + ' >> $THIS_LOG\n\n',
-            '# 2 blank lines, in case of multiple backups in a day\n',
-            'printf "\\n\\n" >> $THIS_LOG\n\n',
-            '# clean up old logs\n',
-            'if [ -f "$LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log" ] ; then\n',
-            '    rm $LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log\n',
-            'fi\n',
-            ''
-        ])
+        f.write(f"""#!/bin/bash
+
+SOURCE={test['source']}
+DEST={test['dest']}
+EXCLUDES={str(Path(conf/test['excludes']).absolute())}
+
+TODAY=$(date '+%F')
+LOG_DIR={test['log']['dir']}
+LOG_PREFIX={test['log']['prefix']}
+THIS_LOG=$LOG_DIR/$(echo $LOG_PREFIX)_$TODAY.log
+LOG_DELETE_OFFSET=$(date '+%F' -d '{test['log']['delete_offset']} ago')
+
+# create backup directory if it doesn't exist
+if [ ! -d "$LOG_DIR" ] ; then
+    mkdir $LOG_DIR
+fi
+
+# print datetime header to log
+printf "RSYNC LOG $(date '+%F %H:%M:%S')\\n" >> $THIS_LOG
+
+# rsync and log verbose output
+rsync -avz --exclude-from=$EXCLUDES $SOURCE $DEST >> $THIS_LOG
+
+# 2 blank lines, in case of multiple backups in a day
+printf "\\n\\n" >> $THIS_LOG
+
+# clean up old logs
+if [ -f "$LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log" ] ; then
+    rm $LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log
+fi
+""")
     else:
-        f.writelines(['#!/bin/bash\n\n', cmd, '\n'])
+        f.write(f"""#!/bin/bash
+
+SOURCE={test['source']}
+DEST={test['dest']}
+EXCLUDES={str(Path(conf/test['excludes']).absolute())}
+
+rsync -az --exclude-from=$EXCLUDES $SOURCE $DEST
+""")
