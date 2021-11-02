@@ -1,5 +1,9 @@
 #!/bin/bash
 
+SOURCE=$HOME/
+DEST=delamb@clunker.lan:hotrod_backup/home
+EXCLUDES=/home/delamb/Dropbox/projects/backups/conf/excludes_home
+
 TODAY=$(date '+%F')
 LOG_DIR=$HOME/.log/backups/home
 LOG_PREFIX=home_
@@ -12,10 +16,10 @@ if [ ! -d "$LOG_DIR" ] ; then
 fi
 
 # print datetime header to log
-printf "RSYNC LOG $(date '+%F %H:%M:%S')\n$(printf '=%.0s' ={1..39})\n" >> $THIS_LOG
+printf "RSYNC LOG $(date '+%F %H:%M:%S')\n" >> $THIS_LOG
 
 # rsync and log verbose output
-rsync -avz --exclude-from=/home/delamb/Dropbox/projects/backups/conf/excludes_home $HOME/ delamb@clunker.lan:hotrod_backup/home >> $THIS_LOG
+rsync -avz --exclude-from=$EXCLUDES $SOURCE $DEST >> $THIS_LOG
 
 # 2 blank lines, in case of multiple backups in a day
 printf "\n\n" >> $THIS_LOG
