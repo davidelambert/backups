@@ -1,9 +1,10 @@
-from datetime import date, timedelta
+from datetime import date
 import json
 from pathlib import Path
 
 today = date.today()
 conf = Path('./conf')
+log_dir = Path('./backup_logs')
 
 with open(conf/'settings.json', 'r') as s:
     settings = json.load(s)
@@ -16,17 +17,17 @@ for name, data in b.items():
 # =============================================
 
 
-test = b['hotrod_home']
+test = b['test']
 
 if 'excludes' in test.keys() and test['excludes'] is not None:
     excludes = str(Path(conf/test['excludes']).absolute())
 else:
     excludes = ''
 
-if 'log' in test.keys() and test['log'] is not None:
-    log = True
+if 'log' in test.keys() and test['log'] is True:
+    log = str(log_dir.absolute()) + '/test_' + str(today) + '.log'
 else:
-    log = False
+    log = ''
 
 
 with open('./output/test', 'w') as f:
@@ -35,33 +36,6 @@ with open('./output/test', 'w') as f:
 SOURCE={test['source']}
 DEST={test['dest']}
 EXCLUDES={excludes}
-TODAY=$(date '+%F')""")
-
-    if log:
-        f.write(f"""
-LOG_DIR={test['log']['dir']}
-LOG_PREFIX={test['log']['prefix']}
-THIS_LOG=$LOG_DIR/$(echo $LOG_PREFIX)_$TODAY.log
-LOG_DELETE_OFFSET=$(date '+%F' -d '{test['log']['delete_offset']} ago')
-
-# create backup directory if it doesn't exist
-if [ ! -d "$LOG_DIR" ] ; then
-    mkdir $LOG_DIR
-fi
-
-# print datetime header to log
-printf "RSYNC LOG $(date '+%F %H:%M:%S')\\n" >> $THIS_LOG
-
-# rsync and log verbose output
-rsync -avz --exclude-from=$EXCLUDES $SOURCE $DEST >> $THIS_LOG
-
-# 2 blank lines, in case of multiple backups in a day
-printf "\\n\\n" >> $THIS_LOG
-
-# clean up old logs
-if [ -f "$LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log" ] ; then
-    rm $LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log
-fi
+LOG={log}
+rsync -az --exclude-from=$EXCLUDES --log-file=$LOG $SOURCE $DEST 
 """)
-    else:
-        f.write('rsync -az --exclude-from=$EXCLUDES $SOURCE $DEST')

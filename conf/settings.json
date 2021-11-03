@@ -3,15 +3,18 @@
 
   "backups": {
 
+    "test": {
+      "source": "$HOME/.jupyter",
+      "dest": "delamb@clunker.lan:hotrod_backup",
+      "excludes": "excludes_test",
+      "log": true
+    },
+
     "hotrod_home": {
       "source": "$HOME/",
       "dest": "delamb@clunker.lan:hotrod_backup/home",
       "excludes": "excludes_home",
-      "log": {
-        "dir": "$HOME/.log/backups/home",
-        "prefix": "home_",
-        "delete_offset": "10 days"
-      }
+      "log": true
     },
 
     "hotrod_config": {
@@ -23,7 +26,8 @@
     "hotrod_local": {
       "source": "/home/delamb/.local",
       "dest": "hotrod_backup/.local",
-      "excludes": "excludes_local"
+      "excludes": "excludes_local",
+      "log": false
     }
 
   }
