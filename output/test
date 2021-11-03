@@ -3,7 +3,6 @@
 SOURCE=$HOME/
 DEST=delamb@clunker.lan:hotrod_backup/home
 EXCLUDES=/home/delamb/Dropbox/projects/backups/conf/excludes_home
-
 TODAY=$(date '+%F')
 LOG_DIR=$HOME/.log/backups/home
 LOG_PREFIX=home_

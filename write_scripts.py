@@ -13,19 +13,32 @@ for name, data in b.items():
     print('\nName: ', name)
     print('Data: ', data)
 
+# =============================================
 
 
 test = b['hotrod_home']
 
-with open('./output/test', 'w') as f:
-    if test['log'] is not None:
-        f.write(f"""#!/bin/bash
+if 'excludes' in test.keys() and test['excludes'] is not None:
+    excludes = str(Path(conf/test['excludes']).absolute())
+else:
+    excludes = ''
 
+if 'log' in test.keys() and test['log'] is not None:
+    log = True
+else:
+    log = False
+
+
+with open('./output/test', 'w') as f:
+
+    f.write(f"""#!/bin/bash\n
 SOURCE={test['source']}
 DEST={test['dest']}
-EXCLUDES={str(Path(conf/test['excludes']).absolute())}
+EXCLUDES={excludes}
+TODAY=$(date '+%F')""")
 
-TODAY=$(date '+%F')
+    if log:
+        f.write(f"""
 LOG_DIR={test['log']['dir']}
 LOG_PREFIX={test['log']['prefix']}
 THIS_LOG=$LOG_DIR/$(echo $LOG_PREFIX)_$TODAY.log
@@ -51,11 +64,4 @@ if [ -f "$LOG_DIR/$(echo $LOG_PREFIX)_$LOG_DELETE_OFFSET.log" ] ; then
 fi
 """)
     else:
-        f.write(f"""#!/bin/bash
-
-SOURCE={test['source']}
-DEST={test['dest']}
-EXCLUDES={str(Path(conf/test['excludes']).absolute())}
-
-rsync -az --exclude-from=$EXCLUDES $SOURCE $DEST
-""")
+        f.write('rsync -az --exclude-from=$EXCLUDES $SOURCE $DEST')
