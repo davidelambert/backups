@@ -1,17 +1,17 @@
 {
-  "output_dir": "/home/delamb/projects/backup/output",
+  "log_dir": "/home/delamb/projects/backups/backup_logs",
 
   "backups": {
 
     "test": {
-      "source": "$HOME/.jupyter",
+      "source": "/home/delamb/.jupyter",
       "dest": "delamb@clunker.lan:hotrod_backup",
       "excludes": "excludes_test",
       "log": true
     },
 
     "hotrod_home": {
-      "source": "$HOME/",
+      "source": "/home/delamb/",
       "dest": "delamb@clunker.lan:hotrod_backup/home",
       "excludes": "excludes_home",
       "log": true

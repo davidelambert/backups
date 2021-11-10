@@ -1,7 +1,0 @@
-#!/bin/bash
-
-SOURCE=$HOME/.jupyter
-DEST=delamb@clunker.lan:hotrod_backup
-EXCLUDES=/home/delamb/Dropbox/projects/backups/conf/excludes_test
-LOG=/home/delamb/Dropbox/projects/backups/backup_logs/test_2021-11-03.log
-rsync -az --exclude-from=$EXCLUDES --log-file=$LOG $SOURCE $DEST 
