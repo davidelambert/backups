@@ -1,15 +1,17 @@
-from datetime import date
+from pathlib import Path
+import os
+import shutil
 import subprocess
 import json
-from pathlib import Path
+from datetime import date
 
-conf = Path('./conf')
+conf_dir = Path('./conf')
 today = date.today()
 
-with open(conf/'settings.json', 'r') as s:
-    settings = json.load(s)
-log_dir = Path(settings['log_dir'])
-b = settings['backups']
+with open(conf_dir/'config.json', 'r') as s:
+    config = json.load(s)
+log_dir = Path(config['log_dir'])
+b = config['backups']
 test = b['test']
 
 def backup(entry:dict, title:str):
@@ -23,7 +25,7 @@ def backup(entry:dict, title:str):
     dest = entry['dest'] + '/' + title + '_' + str(today)
 
     if 'excludes' in entry.keys() and entry['excludes'] is not None:
-        excludes = str(Path(conf/entry['excludes']).absolute())
+        excludes = str(Path(conf_dir/entry['excludes']).absolute())
     else:
         excludes = ''
 
