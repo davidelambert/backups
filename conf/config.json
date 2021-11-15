@@ -5,27 +5,28 @@
 
     "test": {
       "source": "/home/delamb/.jupyter/",
-      "dest": "delamb@clunker.lan:hotrod_backup",
+      "dest": "delamb@clunker.lan:hotrod_backup/.jupyter/",
       "excludes": "excludes_test",
-      "log": true
+      "log": true,
+      "retain_days": 7
     },
 
     "hotrod_home": {
       "source": "/home/delamb/",
-      "dest": "delamb@clunker.lan:hotrod_backup",
+      "dest": "delamb@clunker.lan:hotrod_backup/home/",
       "excludes": "excludes_home",
       "log": true
     },
 
     "hotrod_config": {
       "source": "/home/delamb/.config/",
-      "dest": "delamb@clunker.lan:hotrod_backup",
+      "dest": "delamb@clunker.lan:hotrod_backup/.config/",
       "excludes": "excludes_config"
     },
 
     "hotrod_local": {
       "source": "/home/delamb/.local/",
-      "dest": "delamb@clunker.lan:hotrod_backup",
+      "dest": "delamb@clunker.lan:hotrod_backup/.local",
       "excludes": "excludes_local",
       "log": false
     }
