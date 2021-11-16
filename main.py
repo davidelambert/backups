@@ -4,13 +4,10 @@ import json
 from datetime import date, timedelta
 
 conf_dir = Path('./conf')
-today = date.today()
+log_dir = Path('./backup_logs')
 
 with open(conf_dir/'config.json', 'r') as c:
     config = json.load(c)
-log_dir = Path(config['log_dir'])
-b = config['backups']
-test = b['test']
 
 
 def backup(entry:dict):
@@ -32,7 +29,7 @@ def backup(entry:dict):
         excludes = ''
 
     if 'log' in entry.keys() and entry['log'] is True:
-        log = f'{log_dir.absolute()}/{src_name}_{today}.log'
+        log = f'{log_dir.absolute()}/{src_name}_{date.today()}.log'
     else:
         log = ''
 
@@ -54,15 +51,24 @@ def cleanup(entry:dict):
 
     #TODO: input validation
     
-    cleanup_date = today - timedelta(days=entry['retain_days'])
+
+    cleanup_date = date.today() - timedelta(days=entry['retain_days'])
     dest_server = entry['dest'].split(':')[0]
     dest_path = entry['dest'].split(':')[-1]
+
+
+    #TODO: log rm output
+    src_name = entry['source'].strip('/').split('/')[-1]
+    log = f'{log_dir.absolute()}/{src_name}_{date.today()}.log'
+
 
     subprocess.call(['ssh', dest_server, 'rm', '-rfv',
                      f'{dest_path}archive_{cleanup_date}/'])
 
-    #TODO: log rm output
 
+test = config['test']
+backup(test)
+cleanup(test)
 
 
 

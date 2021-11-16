@@ -1,35 +1,29 @@
 {
-  "log_dir": "/home/delamb/projects/backups/backup_logs",
+  "test": {
+    "source": "/home/delamb/.jupyter/",
+    "dest": "delamb@clunker.lan:hotrod_backup/.jupyter/",
+    "excludes": "excludes_test",
+    "log": true,
+    "retain_days": 7
+  },
 
-  "backups": {
+  "hotrod_home": {
+    "source": "/home/delamb/",
+    "dest": "delamb@clunker.lan:hotrod_backup/home/",
+    "excludes": "excludes_home",
+    "log": true
+  },
 
-    "test": {
-      "source": "/home/delamb/.jupyter/",
-      "dest": "delamb@clunker.lan:hotrod_backup/.jupyter/",
-      "excludes": "excludes_test",
-      "log": true,
-      "retain_days": 7
-    },
+  "hotrod_config": {
+    "source": "/home/delamb/.config/",
+    "dest": "delamb@clunker.lan:hotrod_backup/.config/",
+    "excludes": "excludes_config"
+  },
 
-    "hotrod_home": {
-      "source": "/home/delamb/",
-      "dest": "delamb@clunker.lan:hotrod_backup/home/",
-      "excludes": "excludes_home",
-      "log": true
-    },
-
-    "hotrod_config": {
-      "source": "/home/delamb/.config/",
-      "dest": "delamb@clunker.lan:hotrod_backup/.config/",
-      "excludes": "excludes_config"
-    },
-
-    "hotrod_local": {
-      "source": "/home/delamb/.local/",
-      "dest": "delamb@clunker.lan:hotrod_backup/.local",
-      "excludes": "excludes_local",
-      "log": false
-    }
-
+  "hotrod_local": {
+    "source": "/home/delamb/.local/",
+    "dest": "delamb@clunker.lan:hotrod_backup/.local",
+    "excludes": "excludes_local",
+    "log": false
   }
 }
