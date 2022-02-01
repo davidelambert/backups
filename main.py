@@ -10,7 +10,7 @@ with open(conf_dir/'config.json', 'r') as c:
     config = json.load(c)
 
 
-def backup(entry:dict):
+def backup(entry: dict):
     """Takes an entry from config.json and passes processed
     entry values as arguments to an rsync subprocess.
     """
@@ -18,8 +18,7 @@ def backup(entry:dict):
     # last word of source path, excluding trailing slashes
     src_name = entry['src'].strip('/').split('/')[-1]
 
-    
-    #TODO: more input validation
+    # TODO: more input validation
 
     if 'dest_server' in entry.keys() and entry['dest_server'] is not None:
         if 'dest_user' in entry.keys() and entry['dest_user'] is not None:
@@ -43,14 +42,14 @@ def backup(entry:dict):
     # TODO: file size limit
     subprocess.call(['rsync', '-abCz', '--delete-before',
                     '--backup-dir=archive_`date +%F`',
-                    '--exclude=archive_*',
-                    f'--exclude-from={excludes}',
-                    f'--log-file={log}',
-                    entry['src'],
-                    f"{remote}{entry['dest_path']}"])
+                     '--exclude=archive_*',
+                     f'--exclude-from={excludes}',
+                     f'--log-file={log}',
+                     entry['src'],
+                     f"{remote}{entry['dest_path']}"])
 
 
-def cleanup(entry:dict):
+def cleanup(entry: dict):
     """Deletes the destination archive directory (containing
     previous versions of files synced by backup()) dated {int}
     days ago. {int} is read from the config.json entry's
@@ -80,8 +79,7 @@ def cleanup(entry:dict):
     else:
         subprocess.call(['rm', '-rfv', cleanup_target])
 
-
-    #TODO: log rm output
+    # TODO: log rm output
     # src_name = entry['src'].strip('/').split('/')[-1]
     # log = f'{log_dir.absolute()}/{src_name}_{date.today()}.log'
 
@@ -89,8 +87,6 @@ def cleanup(entry:dict):
 test = config['test']
 backup(test)
 cleanup(test)
-
-
 
 
 # for name, data in b.items():
