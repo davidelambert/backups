@@ -4,8 +4,8 @@
 # Back up (most of) home directory to a spare laptop
 # on the LAN. Ignore Dropbox, VMs, & version ctl files.
 #
-# Sample crontab entry, running daily at 2:00am:
-# 0 2 * * * /full/path/to/script/home-backup.sh
+# Sample anacrontab entry
+# @daily    30  home-backup.daily   /full/path/to/script
 # ======================================================
 
 SOURCE=$HOME/
@@ -26,7 +26,7 @@ EXCLUDES=$HOME/backup_excludes
 
 LOG_DIR=$HOME/.log/home-backup
 
-ARGS="--dry-run -hhaz --stats
+ARGS="-hhaz --stats
       --delete --delete-excluded
       --force --ignore-errors 
       --exclude-from=$EXCLUDES
