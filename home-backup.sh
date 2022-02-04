@@ -22,16 +22,17 @@ YESTERMONTH=$(date "+%F" -d "1 month ago")
 RETAIN_DIR=$REMOTE_DIR/.backup_$YESTERDAY
 RETAIN_DELETE=$REMOTE_DIR/.backup_$YESTERWEEK
 
-LOG_DIR=$HOME/.log/home-backup
+# LOG_DIR=$HOME/.log/home-backup
+LOG_DIR=$HOME/projects/backups/backup_logs
 
-EXCLUDE_PATTERNS=("Dropbox/" "VirtualBox*/")
+EXCLUDE_PATTERNS=("Dropbox/" "VirtualBox*/" "Zotero/" "miniconda3/" ".cache/" ".minecraft/" ".config/Code/" ".local/share/Trash/" ".local/share/baloo/")
 EXCLUDES=""
 for pattern in ${EXCLUDE_PATTERNS[@]}; do
     EXCLUDES+=" --exclude=${pattern}"
 done
 
 ARGS="haz"
-KWARGS="--delete --delete-excluded --force --ignore-errors $EXCLUDES
+KWARGS="--dry-run --delete --delete-excluded --force --ignore-errors $EXCLUDES
         --backup --backup-dir=$RETAIN_DIR --log-file=$LOG_DIR/$TODAY.log"
 
 # create log directory if it doesn't exist
