@@ -8,17 +8,19 @@
 # 0 2 * * * /full/path/to/script/home-backup.sh
 # ======================================================
 
-SOURCE=$HOME/rig/
+SOURCE=$HOME/
 SERVER=clunker.lan
-DEST=$HOME/hotrod-backup
+REMOTE_DIR=$HOME/hotrod-backup
+DEST=$REMOTE_DIR/current
+
 
 TODAY=$(date "+%F")
 YESTERDAY=$(date "+%F" -d "1 day ago")
 YESTERWEEK=$(date "+%F" -d "1 week ago")
 YESTERMONTH=$(date "+%F" -d "1 month ago")
 
-RETAIN_DIR=".backup_$YESTERDAY"
-RETAIN_DELETE=".backup_$YESTERWEEK"
+RETAIN_DIR=$REMOTE_DIR/.backup_$YESTERDAY
+RETAIN_DELETE=$REMOTE_DIR/.backup_$YESTERWEEK
 
 LOG_DIR=$HOME/.log/home-backup
 
@@ -28,22 +30,22 @@ for pattern in ${EXCLUDE_PATTERNS[@]}; do
     EXCLUDES+=" --exclude=${pattern}"
 done
 
-ARGS="-Chaz"
+ARGS="haz"
 KWARGS="--delete --delete-excluded --force --ignore-errors $EXCLUDES
-        --backup --backup-dir=$DEST/$RETAIN_DIR --log-file=$LOG_DIR/$TODAY.log"
+        --backup --backup-dir=$RETAIN_DIR --log-file=$LOG_DIR/$TODAY.log"
 
 # create log directory if it doesn't exist
 if [ ! -d "$LOG_DIR" ] ; then
     mkdir -p $LOG_DIR
 fi
 
-# delete log from a month ago
+# delete log from 1 month ago
 if [ -f "$LOG_DIR/$YESTERMONTH.log" ] ; then
     rm -f "$LOG_DIR/$YESTERMONTH.log"
 fi
 
-# delete backup dir from a week ago
-ssh $SERVER [[ -d "$DEST/$RETAIN_DELETE" ]] && rm -rf $DEST/$RETAIN_DELETE
+# delete backup dir from 1 week ago
+ssh $SERVER "[[ -d '$RETAIN_DELETE' ]] && rm -rf $RETAIN_DELETE"
 
 # abbreviated command
 rsync $ARGS $KWARGS $SOURCE $SERVER:$DEST
