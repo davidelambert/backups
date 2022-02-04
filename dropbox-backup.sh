@@ -13,7 +13,7 @@ DEST=/media/delamb/backup
 
 TODAY=$(date "+%F")
 LOG_DIR=$HOME/.log/dropbox-backup
-DELETE_OFFSET=$(date "+%F" -d "30 days ago")
+DELETE_OFFSET=$(date "+%F" -d "1 month ago")
 
 EXCLUDE_PATTERNS=(".dropbox.cache/" ".dropbox")
 EXCLUDES=""

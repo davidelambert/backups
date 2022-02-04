@@ -11,13 +11,13 @@ DEST=$HOME/Dropbox/articles/Zotero
 
 TODAY=$(date '+%F')
 LOG_DIR=$HOME/.log/zotero-backup
-DELETE_OFFSET=$(date "+%F" -d "30 days ago")
+DELETE_OFFSET=$(date "+%F" -d "1 month ago")
 
 # omit -C option: no version control files to ignore
 ARGS="-haz"
 KWARGS="--delete --delete-excluded --force"
 
-# create log directory if it doesn"t exist
+# create log directory if it doesn't exist
 if [ ! -d "$LOG_DIR" ] ; then
     mkdir -p $LOG_DIR
 fi
