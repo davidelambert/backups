@@ -22,18 +22,16 @@ YESTERMONTH=$(date "+%F" -d "1 month ago")
 RETAIN_DIR=$REMOTE_DIR/.backup_$YESTERDAY
 RETAIN_DELETE=$REMOTE_DIR/.backup_$YESTERWEEK
 
-# LOG_DIR=$HOME/.log/home-backup
-LOG_DIR=$HOME/projects/backups/backup_logs
+EXCLUDES=$HOME/backup_excludes
 
-EXCLUDE_PATTERNS=("Dropbox/" "VirtualBox*/" "Zotero/" "miniconda3/" ".cache/" ".minecraft/" ".config/Code/" ".local/share/Trash/" ".local/share/baloo/")
-EXCLUDES=""
-for pattern in ${EXCLUDE_PATTERNS[@]}; do
-    EXCLUDES+=" --exclude=${pattern}"
-done
+LOG_DIR=$HOME/.log/home-backup
 
-ARGS="haz"
-KWARGS="--dry-run --delete --delete-excluded --force --ignore-errors $EXCLUDES
-        --backup --backup-dir=$RETAIN_DIR --log-file=$LOG_DIR/$TODAY.log"
+ARGS="--dry-run -hhaz --stats
+      --delete --delete-excluded
+      --force --ignore-errors 
+      --exclude-from=$EXCLUDES
+      --backup --backup-dir=$RETAIN_DIR
+      --log-file=$LOG_DIR/$TODAY.log"
 
 # create log directory if it doesn't exist
 if [ ! -d "$LOG_DIR" ] ; then
@@ -49,4 +47,4 @@ fi
 ssh $SERVER "[[ -d '$RETAIN_DELETE' ]] && rm -rf $RETAIN_DELETE"
 
 # abbreviated command
-rsync $ARGS $KWARGS $SOURCE $SERVER:$DEST
+rsync $ARGS $SOURCE $SERVER:$DEST
