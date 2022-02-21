@@ -33,20 +33,14 @@ ARGS="-hhaz --stats
       --backup --backup-dir=$RETAIN_DIR
       --log-file=$LOG_DIR/$TODAY.log"
 
-# create log directory if it doesn't exist
-if [ ! -d "$LOG_DIR" ] ; then
-    mkdir -p $LOG_DIR
-fi
+# create log & backup directories if they don't exist
+[[ ! -d "$LOG_DIR" ]] && mkdir -p $LOG_DIR
+ssh $SERVER "[[ ! -d '$REMOTE_DIR' ]] && mkdir -p $REMOTE_DIR"
 
-# delete log after retention period
-if [ -f "$LOG_DIR/$RETAIN_DATE.log" ] ; then
-    rm -f "$LOG_DIR/$RETAIN_DATE.log"
-fi
-
-# delete backup dir after retention period
-ssh $SERVER "[[ -d '$RETAIN_DELETE' ]] && rm -rf $RETAIN_DELETE"
+# delete logs & backups older than retention period
+./delete_logs.sh "$LOG_DIR" "$RETAIN_DATE"
+ssh $SERVER "bash -s" < ./delete_backups.sh "$REMOTE_DIR" "$RETAIN_DATE"
 
 # abbreviated command
 echo 'Working...'
 rsync $ARGS $SOURCE $SERVER:$DEST
-echo 'Done.'
