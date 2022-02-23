@@ -1,12 +1,13 @@
 #!/bin/bash
 
-# ======================================================
-# Back up (most of) home directory to a spare laptop
-# on the LAN. Ignore Dropbox, VMs, & version ctl files.
-#
+# ==============================================================
+# Back up (most of) home directory to a spare laptop on the LAN.
+# 
 # Sample anacrontab entry
 # @daily    30  home-backup.daily   /full/path/to/script
-# ======================================================
+# ==============================================================
+
+PROJECT_ROOT=$HOME/projects/backups
 
 SOURCE=$HOME/
 SERVER=clunker.lan
@@ -38,8 +39,8 @@ ARGS="-hhaz --stats
 ssh $SERVER "[[ ! -d '$REMOTE_DIR' ]] && mkdir -p $REMOTE_DIR"
 
 # delete logs & backups older than retention period
-./delete_logs.sh "$LOG_DIR" "$RETAIN_DATE"
-ssh $SERVER "bash -s" < ./delete_backups.sh "$REMOTE_DIR" "$RETAIN_DATE"
+$PROJECT_ROOT/delete_logs.sh "$LOG_DIR" "$RETAIN_DATE"
+ssh $SERVER "bash -s" < $PROJECT_ROOT/delete_backups.sh "$REMOTE_DIR" "$RETAIN_DATE"
 
 # abbreviated command
 echo 'Working...'
