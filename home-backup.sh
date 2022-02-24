@@ -15,11 +15,11 @@ REMOTE_DIR=$HOME/hotrod-backup
 DEST=$REMOTE_DIR/current
 
 
-TODAY=$(date "+%F")
-YESTERDAY=$(date "+%F" -d "1 day ago")
+TODAY=$(date -I)
+YESTERDAY=$(date -I -d "1 day ago")
 
 RETAIN_DAYS=14
-RETAIN_DATE=$(date "+%F" -d "$RETAIN_DAYS days ago")
+RETAIN_DATE=$(date -I -d "$RETAIN_DAYS days ago")
 RETAIN_DIR=$REMOTE_DIR/.backup_$YESTERDAY
 RETAIN_DELETE=$REMOTE_DIR/.backup_$RETAIN_DATE
 
