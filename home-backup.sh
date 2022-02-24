@@ -42,6 +42,15 @@ ssh $SERVER "[[ ! -d '$REMOTE_DIR' ]] && mkdir -p $REMOTE_DIR"
 $PROJECT_ROOT/delete_logs.sh "$LOG_DIR" "$RETAIN_DATE"
 ssh $SERVER "bash -s" < $PROJECT_ROOT/delete_backups.sh "$REMOTE_DIR" "$RETAIN_DATE"
 
-# abbreviated command
-echo 'Working...'
-rsync $ARGS $SOURCE $SERVER:$DEST
+# execture the sync as a background job
+rsync $ARGS $SOURCE $SERVER:$DEST & job=$!
+
+# display a spinner while rsync job is running
+printf "Working...  "
+while kill -0 $job 2>/dev/null ; do
+    for s in / - \\ \|; do
+        printf "\b$s"
+        sleep .1
+    done
+done
+
