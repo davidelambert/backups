@@ -53,4 +53,4 @@ while kill -0 $job 2>/dev/null ; do
         sleep .1
     done
 done
-
+printf "\b  \n"
