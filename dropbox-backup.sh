@@ -34,6 +34,15 @@ if [ -f "$LOG_DIR/$DELETE_OFFSET.log" ] ; then
     rm -f "$LOG_DIR/$DELETE_OFFSET.log"
 fi
 
-# do it
-rsync $ARGS $KWARGS $EXCLUDES --log-file=$LOG_DIR/$TODAY.log $SOURCE $DEST
+# run as background job
+rsync $ARGS $KWARGS $EXCLUDES --log-file=$LOG_DIR/$TODAY.log $SOURCE $DEST & job=$!
 
+# display a spinner while rsync job is running
+printf "Working...  "
+while kill -0 $job 2>/dev/null ; do
+    for s in / - \\ \|; do
+        printf "\b$s"
+        sleep .1
+    done
+done
+printf "\b  \n"
