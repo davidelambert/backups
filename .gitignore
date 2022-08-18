@@ -1,5 +1,4 @@
 .vscode/
 old/
 ref/
-
-backup_excludes
+test.log
