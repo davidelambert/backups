@@ -16,6 +16,7 @@ Zotero
 .local/share/Trash
 .local/share/virtualenv
 .local/share/virtualenvs
+.local/share/xorg
 .minecraft
 .mozilla
 .npm
