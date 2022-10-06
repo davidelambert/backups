@@ -4,6 +4,7 @@
 anaconda3
 Downloads
 R
+REAPER.old
 R-site-library
 Screenshots
 Screencasts
@@ -13,9 +14,15 @@ win11vm
 Zotero
 .config/Code
 .config/google-chrome
+.hydrogen
+.local/share/gnome-shell
+.local/share/gvfs-metadata
+.local/share/nautilus
+.local/share/scide
 .local/share/Trash
 .local/share/virtualenv
 .local/share/virtualenvs
+.local/share/vulkan
 .local/share/xorg
 .minecraft
 .mozilla
